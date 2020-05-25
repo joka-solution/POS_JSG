@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block head_title %}
+    {{ title }} | {{ block.super }}
+{% endblock head_title %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% load humanize %}
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <div class="col-sm-12">
+
+<div class="panel panel-primary">
+    <div class="panel-body" style="overflow: auto; background: #D8D8D8; color: grey; font-family: Calibri, Candara; font-size: 12;" >
+        {% if form %}
+        <form method="POST" action="" class="uniForm" enctype="multipart/form-data">{% csrf_token %}
+            {{ form|crispy}} </p>
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="submit" class="btn btn-primary" value="submit" name="add_article">Agregar Articulo</button>
+            </div>
+        </form>
+        {% endif %}
+    </div>
+    {% if imagen %}
+    <div style="overflow: auto;
+                background: #D8D8D8;
+                color: grey;
+                font-family: consolas, Candara;
+                font-size: 12;
+                width: 30%;
+                float: left;
+                display: inline-block;"><img src="/media/{{ imagen }}" width="450px" height="380px" /></div>
+    {% else %}
+    <div style="overflow: auto;
+                background: #D8D8D8;
+                color: grey;
+                font-family: consolas, Candara;
+                font-size: 12;
+                width: 30%;
+                float: left;
+                display: inline-block;"><img src="{% static 'img/logo.png' %}" width="450px" height="380px" /></div>
+    {% endif %}
+    <div style="overflow: auto;
+                background: #D8D8D8;
+                color: black;
+                font-family: Calibri, consolas, Candara;
+                font-size: 12;
+                width: 70%;
+                float: right;
+                display: inline-block;">
+        <table width="100%" class="table table-condensed">
+            <tr class="info">
+              <th>No</th>
+              <th>Articulo ID</th>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Total</th>
+            </tr>
+      {% for over in queryset  %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ over.articulo_id }}</td>
+              <td>{{ over.producto }}</td>
+              <td>$ {{ over.precio }}</td>
+              <td>{{ over.cantidad }}</td>
+              <td>$ {{ over.total }}</td>
+            </tr>
+      {% endfor %}</p>
+        </table>
+    </div>
+</div>
+</div>
+<div class="panel panel-primary">
+    <div class="panel panel-heading" >
+        <table width="100%">
+            <tr>
+                <td width="100%" BGCOLOR="BLACK">
+                    <font color="white" align="right">
+                        <strong>
+                            <h1>Total: {% if total %} $ {{ total|intcomma }}{% else %}$ 0{% endif %}.00</h1>
+                        </strong>
+                    </font>
+                </td>
+            </tr>
+            <tr>
+                <td width="100%" BGCOLOR="BLACK" align="right">
+                    <form method="POST" action="" class="uniForm" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="btn-group" role="group" aria-label="...">
+                            {% if pago_form %}{{ pago_form }}{% endif %}
+                            <button type="submit" class="btn btn-success btn-lg" value="submit" name="contado">Contado</button>
+                            {% if flag == 'apartados' %}
+                            <button type="submit" class="btn btn-warning btn-lg" value="submit" name="apartados">Apartado</button>
+                            <!--<button type="submit" class="btn btn-danger btn-lg" value="submit" name="credito">Credito</button>-->
+                            {% endif %}
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+  </div>
+
+{% endblock content %}

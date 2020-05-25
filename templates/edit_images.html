@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head_title %}
+    Welcome | {{ block.super }}
+{% endblock head_title %}
+{% load crispy_forms_tags %}
+{% include 'js.html' %}
+{% load tz %}
+{% block content %}
+{% if request.user.is_authenticated %}
+    {% if request.user.is_superuser  %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Editar Registro.</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Starter Page</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <div class="col-sm-12">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="panel panel-primary">
+                                <div id="lesen" class="panel-body" style="overflow: auto; background: #D8D8D8; color: grey; font-family: Calibri, Candara; font-size: 12;" >
+                                    {% if form %}
+                                        <form method="POST" action="" enctype="multipart/form-data">{% csrf_token %}
+                                            {{ form.as_p }}
+                                            <button type="submit" class="btn btn-primary" name="change_img" value="submit">Submit</button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+    {% else %}
+        <div class="panel panel-danger">
+            <div class="panel panel-heading"><h2>Access denided</h2></div>
+                <div class="panel panel-body">
+                    <h2>You not authorized to access this page</h2>
+                    <h3>Please login</h3>
+                </div>
+        </div>   
+
+    </div>
+    {% endif %}        
+{% endif %}     
+{% endblock content %}

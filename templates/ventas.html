@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block head_title %}
+    {{ title }} | {{ block.super }}
+{% endblock head_title %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">{{ title }}</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Starter Page</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <div class="col-sm-12">
+        <div class="panel panel-primary">
+            <div class="panel panel-heading" >
+                <div><img src="{% static 'img/logo.png' %}" style="align:center" width="10%" height="10%" class='img-responsive' /></div>
+                <div style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%);"><h2 align="center" style="color: pink; font-family: Calibri;">{{ title }}</h2></div>
+            </div>
+            <div id="lesen" class="panel-body" style="overflow: auto; background: #D8D8D8; color: grey; font-family: Calibri, Candara; font-size: 12;" >
+                <form method="POST" action="" class="uniForm" enctype="multipart/form-data">{% csrf_token %}
+                    {{ form }} </p>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="submit" class="btn btn-success btn-lg" value="submit" name="cliente_seleccionado">Seleccionar</button>
+                        <button type="submit" class="btn btn-warning btn-lg" value="submit" name="registrar_nuevo">Registrar Nuevo Cliente</button>
+                        <button type="submit" class="btn btn-danger btn-lg" value="submit" name="corte_ventas">Corte de Ventas</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+{% endblock content %}

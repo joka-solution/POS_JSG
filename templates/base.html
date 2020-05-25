@@ -1,0 +1,182 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}">
+    <!-- SELECT2 -->
+    <link href="{% static 'css/select2.min.css' %}" rel="stylesheet" >
+  <title>{% block head_title %}POS JSG | Starter{% endblock %}</title>
+{% include 'head_css.html' %}
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+
+<!----------  Top Nav Bar ---------->
+{%  include 'up_nav_bar.html' %}
+
+{% if request.user.is_authenticated %}
+
+<!----------  Lateral Nav Bar ---------->
+{% include 'lateral_nav_bar.html' %}
+<!-------------------------------------------------->
+
+<div aling="left" class="messages">
+  {% if messages %}
+    <div class="alert alert-success alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <strong>Info.!!</strong>
+      <ul class="messages">
+        {% for message in messages %}
+          <li {% if message.tags %} class='{{ message.tags }}' {% endif %}>
+            {% if "html_safe" in message.tags %}
+              {{ message|safe }}
+            {% else %}
+              {{ message }}
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</div>
+<!-------------------------------------------------->
+{% block content %}
+{% endblock %}
+<!-------------------------------------------------->
+{% else %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
+    <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+
+  <div class="col-sm-12  main">
+  <link href="{% static 'css/carousel.css' %}" rel="stylesheet" type="text/css">
+  <div>
+  <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+
+      <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="5"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="6"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="7"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="8"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <a href="https://belladonnafashionaccessories.com">
+        <img src="{% static 'img/belladonna.png' %}" alt="...Esta es una Prueba de Carousel.!!!">
+        </a>
+        <div class="carousel-caption">
+          ...
+        </div>
+      </div>
+      <div class="item">
+        <img src="{% static 'img/articulo_1.jpeg' %}" alt="...Esta es una Prueba de Carousel.!!!">
+        <div class="carousel-caption">
+          ...
+        </div>
+      </div>
+          <div class="item">
+        <img src="{% static 'img/articulo_2.jpeg' %}" align="middle" alt="...">
+        <div class="carousel-caption">
+          ...
+        </div>
+      </div>
+
+          <div class="item">
+        <img src="{% static 'img/articulo_3.jpeg' %}" align="middle" alt="...">
+        <div class="carousel-caption">
+          ...
+        </div>
+      </div>
+          <div class="item">
+        <img src="{% static 'img/articulo_4.jpeg' %}" align="middle" alt="...">
+        <div class="carousel-caption">
+          ...
+        </div>
+      </div>
+          <div class="item">
+        <img src="{% static 'img/articulo_5.jpeg' %}" align="middle" alt="...">
+        <div class="carousel-caption">
+          ...
+        </div>
+      </div>
+          <div class="item">
+        <img src="{% static 'img/articulo_6.jpeg' %}" align="middle" alt="...">
+        <div class="carousel-caption">
+          ...
+        </div>
+      </div>
+          <div class="item">
+        <img src="{% static 'img/articulo_7.jpeg' %}" align="middle" alt="...">
+        <div class="carousel-caption">
+          ...
+        </div>
+      </div>
+          <div class="item">
+        <img src="{% static 'img/articulo_8.jpeg' %}" align="middle" alt="...">
+        <div class="carousel-caption">
+          ...
+        </div>
+      </div>
+
+    </div>
+    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+  <div>
+    <hr>
+    <h1><font color="white">Here is my test.</font></h1>
+  </div>
+{% endif %}
+
+
+  <!---------- Control Sidebar ---------->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+    <div class="p-3">
+      <h5>Title</h5>
+      <p>Sidebar content</p>
+    </div>
+  </aside>
+  <!---------- /.control-sidebar ---------->
+
+{% include 'footer_bar.html' %}
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+<script src="{% static 'AdminLTE/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'AdminLTE/dist/js/adminlte.min.js' %}"></script>
+<!-- SELECT2 -->
+<script src="{% static 'js/select2.min.js' %}"></script>
+<script src="{% static 'js/jquery-1.9.1.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+<script src='{% static "js/bootstrap.min.js" %}'></script>
+{% include 'js.html' %}
+</body>
+</html>

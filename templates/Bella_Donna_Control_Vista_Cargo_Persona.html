@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block head_title %}
+    {{ title }} | {{ block.super }}
+{% endblock head_title %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% load qr_code %}
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">{{ title }}</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Starter Page</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <div class="col-sm-12">
+        <hr>
+        <label for="search_by_ID">Busca Articulo: </label>
+        <input type="text" id="search_by_ID" onkeyup="buscando()" placeholder="Entra Articulo ID.." title="Type in a elb name" autofocus/>
+        <span style="display:none;" id="search_by_ID"></span>
+        <hr>
+{% if request.user.is_patron %}
+        <form method="POST" action="" class="uniForm" enctype="multipart/form-data">{% csrf_token %}
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="submit" class="btn btn-success btn-lg" value="submit" name="nuevo_articulo_distr">Agregar Articulo</button>
+            </div>
+        </form>
+        <hr>
+{% endif %}
+        <div>
+            <table id="Inventario_Articulos" class="table table-condensed">
+                <tr class="active"><th>Nombre</th><th>Detalles</th><th>Contenido Pzas</th><th>Precio Distribucion</th><th>Precio Venta</th><th>Existencia</th>{% if request.user.is_patron %}<th>Editar</th>{% endif %}</tr>
+                {% for obj in object_list %}
+                <tr class="success">
+                    <!--<td>{{ obj.articulo_id }}</td>-->
+                    <!--<td><a href='{{ obj.control_inventory_url }}' class="btn btn-info" role="button">{{ obj.articulo_id }}</a></td>-->
+                    <td><strong>{{ obj.nombre }}</strong></td>
+                    <!--<td>
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="/media/{{ obj.imagen }}">
+                                    <img class="img-rounded" src="/media/{{ obj.imagen }}" alt="Responsive image" width="110" height="100">
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ obj.nombre }}</td>-->
+                    <td>{{ obj.detalles|truncatechars:20 }}</td>
+                    <td>{{ obj.contenido_pzas }}</td>
+                    <td>${{ obj.precio_dist|floatformat:2 }}</td>
+                    <td>${{ obj.precio_venta|floatformat:2 }}</td>
+                {% if obj.inventario == '0' %}
+                    <td class="danger">{{ obj.inventario }}</td>
+                {% elif obj.inventario <= 5 %}
+                    <td class="warning">{{ obj.inventario }}</td>
+                {% else %}
+                    <td>{{ obj.inventario }}</td>
+                {% endif %}
+                    <!--<td>
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="/media/{{ obj.barcode }}">
+                                    <img class="img-rounded" src="/media/{{ obj.barcode }}" alt="Responsive image" width="160" height="70">
+                                </a>
+                            </div>
+                        </div>
+                    </td>-->
+                {% if request.user.is_patron %}
+                    <td><a href='{{ obj.get_edit_url }}' class="btn btn-primary" role="button">Editar</a></td>
+                {% endif %}
+                </tr>
+                {% endfor %}
+            </table>
+            <div class="pagination">
+                <span class="step-links">
+                {% if object_list.has_previous %}
+                    <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}">previous</a>
+                {% endif %}
+                    <span class="current">
+                        Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+                    </span>
+                {% if object_list.has_next %}
+                    <a href="?{{ page_request_var }}={{ object_list.next_page_number }}">next</a>
+                {% endif %}
+                </span>
+            </div>
+            <hr>
+        </div>
+
+<script language="javascript">
+        function buscando() {
+            var tableReg = document.getElementById('Inventario_Articulos');
+            var searchText = document.getElementById('search_by_ID').value.toLowerCase();
+            var cellsOfRow="";
+            var found=false;
+            var compareWith="";
+
+            // Recorremos todas las filas con contenido de la tabla
+            for (var i = 1; i < tableReg.rows.length; i++)
+            {
+                cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                found = false;
+                // Recorremos todas las celdas
+                for (var j = 0; j < cellsOfRow.length && !found; j++)
+                {
+                    compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+                    // Buscamos el texto en el contenido de la celda
+                    if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1))
+                    {
+                        found = true;
+                    }
+                }
+                if(found)
+                {
+                    tableReg.rows[i].style.display = '';
+                } else {
+                    // si no ha encontrado ninguna coincidencia, esconde la
+                    // fila de la tabla
+                    tableReg.rows[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+    </div>
+  </div>
+{% endblock content %}

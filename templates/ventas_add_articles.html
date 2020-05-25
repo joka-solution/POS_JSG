@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% block head_title %}
+    {{ title }} | {{ block.super }}
+{% endblock head_title %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% load humanize %}
+{% block content %}
+
+                      <td>$ {{ over.precio }}</td>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">{{ title }}</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Starter Page</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-6">
+
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h5 class="m-0">Articulos en Tienda.</h5>
+            </div>
+            <div class="card-body">
+              <div>
+                <label for="search_by_ID">Busca Articulo: </label>
+                <input type="text" id="search_by_ID" onkeyup="buscando()" placeholder="Entra Articulo ID.." title="Type in a elb name" autofocus/>
+                <span style="display:none;" id="search_by_ID"></span>
+              </div>
+              <div>
+                <table id="Inventario_Articulos" class="table table-condensed">
+                  <tr class="active"><th>Imagen</th><th>Nombre</th><th>Precio Venta</th><th>Agregar</th></tr>
+                  {% for obj in object_list %}
+                  <tr class="success">
+                    <td>
+                      <div class="media">
+                        <div class="media-left">
+                          <a href="/media/{{ obj.imagen }}">
+                            <img class="img-rounded" src="/media/{{ obj.imagen }}" alt="Responsive image" width="110" height="100">
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ obj.nombre }}</td>
+                    <td>${{ obj.precio_venta|floatformat:2 }}</td>
+                    <td>
+                      <form method="POST" action="" class="uniForm" enctype="multipart/form-data">{% csrf_token %}
+                        <input type="hidden" name="indice" value="{{obj.pk}}"/>
+                        <input type="number" min="0" id="valor" name="valor" placeholder="Cantidad.."/>
+                        <div class="btn-group" role="group" aria-label="...">
+                          <button type="submit" class="btn btn-outline-success btn-sm" value="submit" name="Agregar">Agregar</button>
+                          <button type="submit" class="btn btn-outline-danger btn-sm" value="submit" name="Quitar">Quitar</button>
+                        </div>
+                      </form>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </table>
+                <div class="pagination">
+                      <span class="step-links">
+                        {% if object_list.has_previous %}
+                          <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}">previous</a>
+                        {% endif %}
+                          <span class="current">
+                            Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+                          </span>
+                          {% if object_list.has_next %}
+                          <a href="?{{ page_request_var }}={{ object_list.next_page_number }}">next</a>
+                          {% endif %}
+                      </span>
+                </div>
+                <hr>
+              </div>
+              <script language="javascript">
+        function buscando() {
+            var tableReg = document.getElementById('Inventario_Articulos');
+            var searchText = document.getElementById('search_by_ID').value.toLowerCase();
+            var cellsOfRow="";
+            var found=false;
+            var compareWith="";
+
+            // Recorremos todas las filas con contenido de la tabla
+            for (var i = 1; i < tableReg.rows.length; i++)
+            {
+                cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                found = false;
+                // Recorremos todas las celdas
+                for (var j = 0; j < cellsOfRow.length && !found; j++)
+                {
+                    compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+                    // Buscamos el texto en el contenido de la celda
+                    if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1))
+                    {
+                        found = true;
+                    }
+                }
+                if(found)
+                {
+                    tableReg.rows[i].style.display = '';
+                } else {
+                    // si no ha encontrado ninguna coincidencia, esconde la
+                    // fila de la tabla
+                    tableReg.rows[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+            </div>
+          </div>
+
+          <!-- /.card -->
+        </div>
+        <!-- /.col-md-6 -->
+        <div class="col-lg-6">
+
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h5 class="m-0">Carrito de Compras.</h5>
+            </div>
+            <div class="card-body">
+              <div style="overflow: auto;
+                background: #D8D8D8;
+                color: black;
+                font-size: 10;
+                width: 100%;
+                float: right;
+                display: inline-block;">
+                <table width="100%" class="table table-condensed">
+                  <tr class="info">
+                    <th>No</th>
+                    <th>Articulo ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                  </tr>
+                  {% for over in queryset  %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ over.articulo_id }}</td>
+                    <td>{{ over.producto }}</td>
+                    <td>$ {{ over.precio }}</td>
+                    <td>{{ over.cantidad }}</td>
+                    <td>$ {{ over.total }}</td>
+                    </tr>
+                      {% endfor %}
+                      </p>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h5 class="m-0">Metodo de Pago.</h5>
+              </div>
+              <div class="card-body">
+                <table width="100%">
+                  <tr>
+                    <td width="100%" BGCOLOR="BLACK">
+                      <font color="white" align="right">
+                        <strong>
+                          <h1>Total: {% if total %} $ {{ total|intcomma }}{% else %}$ 0{% endif %}.00</h1>
+                        </strong>
+                      </font>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="100%" BGCOLOR="BLACK" align="right">
+                      <form method="POST" action="" class="uniForm" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="btn-group" role="group" aria-label="...">
+                            {% if pago_form %}{{ pago_form }}{% endif %}
+                          <button type="submit" class="btn btn-success btn-lg" value="submit" name="contado">Contado</button>
+                            {% if flag == 'apartados' %}
+                          <button type="submit" class="btn btn-warning btn-lg" value="submit" name="apartados">Apartado</button>
+                            <!--<button type="submit" class="btn btn-danger btn-lg" value="submit" name="credito">Credito</button>-->
+                            {% endif %}
+                        </div>
+                      </form>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- /.col-md-6 -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock content %}

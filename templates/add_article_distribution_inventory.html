@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block head_title %}
+    {{ title }} | {{ block.super }}
+{% endblock head_title %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">{{ title }}</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Starter Page</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <div class="col-sm-12">
+        <hr>
+        {% if form %}
+        <form method="POST" action="" enctype="multipart/form-data">{% csrf_token %}
+            {{ form|crispy}}
+            <button type="submit" class="btn btn-primary" value="submit" name="agregar_articulo">Grabar Articulo</button>
+        </form>
+        {% endif %}
+    </div>
+  </div>
+
+{% endblock %}
