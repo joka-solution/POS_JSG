@@ -2,7 +2,7 @@ bcrypt==3.1.7
 bootstrap3-datetime==2.4
 boto==2.49.0
 cffi==1.14.0
-cryptography==2.8
+cryptography==3.2
 Django==2.1.1
 django-autocomplete-light==3.5.1
 django-bootstrap-datepicker-plus==3.0.5
