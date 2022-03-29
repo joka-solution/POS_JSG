@@ -17,7 +17,7 @@ django-qr-code==1.0.0
 fabric==2.5.0
 humanize==0.5.1
 invoke==1.4.1
-paramiko==2.7.1
+paramiko==2.10.1
 Pillow==5.2.0
 prettytable==0.7.2
 pycparser==2.20
